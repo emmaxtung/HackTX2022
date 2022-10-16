@@ -7,8 +7,10 @@ import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
 import './App.css';
 
-
 function App() {
+
+  const apiKey = '3854fc04e59af2d9248a758acdb13ea6';
+
   const [state, setState] = useState([
     {
       startDate: new Date(),
@@ -16,6 +18,19 @@ function App() {
       key: "selection"
     }
   ]);
+
+  const [city, setCity] = useState('');
+
+  function getCoords() {
+    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + city + ',&appid=' + apiKey)
+    .then(response => {
+      console.log(response.json());
+      
+    })
+    .then(city => {
+      console.log();
+    })
+  };
   
   return (
     <div className="App">
@@ -33,10 +48,14 @@ function App() {
             ranges={state}
           />
           <form>
-            Input city name:
-            <TextField id="standard-basic" label="Standard" variant="standard" />
-            <Button variant="contained">Submit</Button>
-            <br/>
+            <TextField 
+            id="standard-basic" 
+            label="City Name" 
+            variant="standard" 
+            value={city}
+            onChange={(a) => {setCity(a.target.value)}}
+            />
+            <Button variant="contained" onClick={getCoords}>Submit</Button>
           </form>
         </div>
       </header>
