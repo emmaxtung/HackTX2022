@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import { DateRange } from "react-date-range";
 import {useState} from 'react'
 import Button from '@mui/material/Button';
@@ -9,7 +8,7 @@ import './App.css';
 
 function App() {
 
-  const apiKey = '3854fc04e59af2d9248a758acdb13ea6';
+  const apiKey = '';
 
   const [state, setState] = useState([
     {
@@ -24,13 +23,19 @@ function App() {
   function getCoords() {
     fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + city + ',&appid=' + apiKey)
     .then(response => {
-      console.log(response.json());
-      
-    })
-    .then(city => {
-      console.log();
+      return response.json();
     })
   };
+
+  function getWeather() {
+    const lat = response.lat;
+    const long = response.lon;
+    fetch('https://history.openweathermap.org/data/2.5/history/city?lat=' + lat + '&lon=' + lon + '&type=hour&start={start}&end={end}&appid=' + apiKey)
+    .then(response => {
+      console.log(response.json());
+      return response.json();
+    })
+  }
   
   return (
     <div className="App">
