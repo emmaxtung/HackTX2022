@@ -28,12 +28,13 @@ function App() {
   };
 
   function getWeather() {
-    const lat = response.lat;
-    const long = response.lon;
-    fetch('https://history.openweathermap.org/data/2.5/history/city?lat=' + lat + '&lon=' + lon + '&type=hour&start={start}&end={end}&appid=' + apiKey)
-    .then(response => {
-      console.log(response.json());
-      return response.json();
+    let coordinateData = getCoords();
+    const lat = coordinateData.lat;
+    const long = coordinateData.lon;
+    fetch('https://history.openweathermap.org/data/2.5/history/city?lat=' + lat + '&lon=' + long + '&type=hour&start={start}&end={end}&appid=' + apiKey)
+    .then(weatherData => {
+      console.log(weatherData.json());
+      return weatherData.json();
     })
   }
   
@@ -60,7 +61,7 @@ function App() {
             value={city}
             onChange={(a) => {setCity(a.target.value)}}
             />
-            <Button variant="contained" onClick={getCoords}>Submit</Button>
+            <Button variant="contained" onClick={getWeather}>Submit</Button>
           </form>
         </div>
       </header>
