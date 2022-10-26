@@ -8,7 +8,7 @@ import './App.css';
 
 function App() {
 
-  const apiKey = '';
+  const apiKey = 'df59aef67a6c142dcc8842c4570bee14';
 
   const [state, setState] = useState([
     {
@@ -20,21 +20,24 @@ function App() {
 
   const [city, setCity] = useState('');
 
-  function getCoords() {
-    fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + city + ',&appid=' + apiKey)
-    .then(response => {
-      return response.json();
+
+  async function getCoords() {
+    let response = await fetch('http://api.openweathermap.org/geo/1.0/direct?q=' + city + ',&appid=' + apiKey)
+    let coordinateData = await response.json()
+    .then(coordinateData => {
+      //console.log(coordinateData);
+      //alert(coordinateData[0].name + " " + coordinateData[0].lat + " " + coordinateData[0].lon);
+      getWeather(coordinateData[0].lat, coordinateData[0].lon);
     })
   };
 
-  function getWeather() {
-    let coordinateData = getCoords();
-    const lat = coordinateData.lat;
-    const long = coordinateData.lon;
-    fetch('https://history.openweathermap.org/data/2.5/history/city?lat=' + lat + '&lon=' + long + '&type=hour&start={start}&end={end}&appid=' + apiKey)
+  async function getWeather(latValue, lonValue) {
+    const lat = latValue;
+    const long = lonValue;
+    let response = await fetch('https://api.openweathermap.org/data/2.5/weather?lat=' + lat + '&lon=' + long + '&appid=' + apiKey)
+    let weatherData = await response.json()
     .then(weatherData => {
-      console.log(weatherData.json());
-      return weatherData.json();
+      console.log(weatherData);
     })
   }
   
@@ -43,7 +46,7 @@ function App() {
       <header className="App-header">
         <div>
           <h2>
-            Weather to Pack or Not?
+            .
           </h2>
           <h4>
             Choose your trip date range:
@@ -61,7 +64,7 @@ function App() {
             value={city}
             onChange={(a) => {setCity(a.target.value)}}
             />
-            <Button variant="contained" onClick={getWeather}>Submit</Button>
+            <Button variant="contained" onClick={getCoords}>Submit</Button>
           </form>
         </div>
       </header>
