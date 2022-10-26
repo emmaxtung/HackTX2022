@@ -8,7 +8,7 @@ import './App.css';
 
 function App() {
 
-  const apiKey = 'df59aef67a6c142dcc8842c4570bee14';
+  const apiKey = '';
 
   const [state, setState] = useState([
     {
